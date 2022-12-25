@@ -129,12 +129,6 @@ function App() {
       >
         Refazer
       </button>
-
-      <br/>
-      <br/>
-      List Dots: {JSON.stringify(listDots)}
-      <br/>
-      List Dots Undo: {JSON.stringify(listDotsUndo)}
       
       {listDots.map((item, index) => (
         <span
