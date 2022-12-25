@@ -6,16 +6,14 @@ function App() {
   const [listDots, setListDots] = useState([]);
   const [listDotsUndo, setListDotsUndo] = useState([]);
 
-  const handleClick = (event) => {
-
-    setListDotsUndo([]);
+  const addDot = (pointX, pointY) => {
 
     if(listDots.length !== 0){
 
       let dotExist = null;
 
       listDots.map((item, index) => {
-        if(item.x === event.clientX && item.y === event.clientY){
+        if(item.x === pointX && item.y === pointY){
           dotExist = index;
         }
       })
@@ -31,16 +29,22 @@ function App() {
         return;
 
       }
-
     }
 
     const newDot = {
-      x: event.clientX,
-      y: event.clientY,
+      x: pointX,
+      y: pointY,
       count: 1
     }
 
     setListDots((prev) => [...prev, newDot])
+
+  }
+
+  const handleClickScreen = (event) => {
+
+    setListDotsUndo([]);
+    addDot(event.clientX, event.clientY);
 
   }
 
@@ -53,7 +57,26 @@ function App() {
 
     let dotUndo = listDots[listDots.length - 1];
 
-    setListDotsUndo((prev) => [...prev, dotUndo])
+    setListDotsUndo((prev) => [...prev, {
+      x: dotUndo.x,
+      y: dotUndo.y,
+    }])
+
+    if(dotUndo.count > 1){
+      let newListDots = [...listDots]
+      let lastDotsNewList = newListDots[newListDots.length - 1]
+
+      lastDotsNewList = {
+        ...lastDotsNewList,
+        count: lastDotsNewList.count - 1
+      }
+
+      newListDots[newListDots.length - 1] = lastDotsNewList;
+
+      setListDots(newListDots)
+
+      return;
+    }
     setListDots(listDots.slice(0, -1))
 
   }
@@ -65,7 +88,10 @@ function App() {
       return;
     }
 
-    setListDots((prev) => [...prev, listDotsUndo[listDotsUndo.length - 1]])
+    const itemRedo = listDotsUndo[listDotsUndo.length - 1];
+
+    addDot(itemRedo.x, itemRedo.y);
+    
     setListDotsUndo(listDotsUndo.slice(0, -1))
 
   }
@@ -83,7 +109,7 @@ function App() {
   }
 
   return (
-    <div id="screen-zone" onClick={handleClick}>
+    <div id="screen-zone" onClick={handleClickScreen}>
 
       <div className="infos" onClick={(e) => e.stopPropagation()}>
         <p>Quantidade de Cliques dados: {countClicks()}</p>
@@ -103,6 +129,12 @@ function App() {
       >
         Refazer
       </button>
+
+      <br/>
+      <br/>
+      List Dots: {JSON.stringify(listDots)}
+      <br/>
+      List Dots Undo: {JSON.stringify(listDotsUndo)}
       
       {listDots.map((item, index) => (
         <span
