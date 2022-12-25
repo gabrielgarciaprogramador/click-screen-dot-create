@@ -1,0 +1,18 @@
+#root {
+  height: 100%;
+}
+#screen-zone {
+  background-color: #f8f8f8;
+  height: 100%;
+  width: 100%;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background-color: #666666;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
