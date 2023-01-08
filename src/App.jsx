@@ -8,6 +8,8 @@ function App() {
   const [listDots, setListDots] = useState([]);
   const [listDotsUndo, setListDotsUndo] = useState([]);
 
+  const sizeDot = 5;
+
   const addDot = (pointX, pointY) => {
 
     if(listDots.length !== 0){
@@ -15,7 +17,10 @@ function App() {
       let dotExist = null;
 
       listDots.map((item, index) => {
-        if(item.x === pointX && item.y === pointY){
+        if(
+          (pointX <= item.x + sizeDot/2 && pointX >= item.x - sizeDot/2) &&
+          (pointY <= item.y + sizeDot/2 && pointY >= item.y - sizeDot/2)
+        ){
           dotExist = index;
         }
       })
@@ -145,9 +150,10 @@ function App() {
           style={{
             left: item.x,
             top: item.y,
+            width: sizeDot,
+            height: sizeDot,
           }}
           className={`
-            w-[5px] h-[5px]
             absolute
             bg-cyan-400
             rounded-full
