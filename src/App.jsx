@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 import Button from './components/Button';
+import Tooltip from './components/Tooltip';
 
 function App() {
   
@@ -148,31 +149,32 @@ function App() {
           bgColorDot = "bg-cyan-200";
         }
         
-
         return(
-          
-          <span
+          <Tooltip
+            content={item.count > 1 ? `Cliques: ${item.count}` : ''}
+            disabled={item.count <= 1}
             key={index}
-            style={{
-              left: item.x,
-              top: item.y,
-              width: sizeDot,
-              height: sizeDot,
-            }}
-            className={`
-              absolute
-              ${bgColorDot}
-              rounded-full
-              transform -translate-x-1/2 -translate-y-1/2
-              hover:cursor-pointer
-              hover:opacity-80`}
-            title={item.count > 1 ? `Cliques: ${item.count}` : ''}
-          ></span>
+          >
+            <span
+              style={{
+                left: item.x,
+                top: item.y,
+                width: sizeDot,
+                height: sizeDot,
+              }}
+              className={`
+                absolute
+                ${bgColorDot}
+                rounded-full
+                transform -translate-x-1/2 -translate-y-1/2
+                hover:cursor-pointer
+                hover:opacity-80`}
+            ></span>
+          </Tooltip>
         )}
       )}
 
       <div className="flex justify-center">
-        <div></div>
         <div className="w-auto inline-flex gap-3 py-2 px-3" onClick={(e) => e.stopPropagation()}>
           <Button
             onClick={handleUndo}
