@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 
+import Button from './components/Button';
+
 function App() {
   
   const [listDots, setListDots] = useState([]);
@@ -48,8 +50,7 @@ function App() {
 
   }
 
-  const handleUndo = (event) => {
-    event.stopPropagation();
+  const handleUndo = () => {
 
     if(listDots.length === 0){
       return;
@@ -81,8 +82,7 @@ function App() {
 
   }
 
-  const handleRedo = (event) => {
-    event.stopPropagation();
+  const handleRedo = () => {
 
     if(listDotsUndo.length === 0){
       return;
@@ -109,26 +109,35 @@ function App() {
   }
 
   return (
-    <div id="screen-zone" onClick={handleClickScreen}>
+    <div
+      className="w-full h-full flex flex-col justify-between relative bg-gray-800"
+      onClick={handleClickScreen}
+    >
 
-      <div className="infos" onClick={(e) => e.stopPropagation()}>
-        <p>Quantidade de Cliques dados: {countClicks()}</p>
-        <p>Quantidade de Pontos na tela: {listDots.length}</p>
+      <div className="flex justify-center">
+        <div className="w-auto flex gap-5 py-2 px-3" onClick={(e) => e.stopPropagation()}>
+          <span className="text-white text-sm">Quantidade de Cliques dados: <b>{countClicks()}</b></span>
+          <span className="text-white text-sm">Quantidade de Pontos na tela: <b>{listDots.length}</b></span>
+        </div>
       </div>
 
-      <button
-        onClick={handleUndo}
-        disabled={listDots.length === 0}
-      >
-        Desfazer
-      </button>
+      <div className="flex justify-center">
+        <div className="w-auto flex gap-3 py-2 px-3" onClick={(e) => e.stopPropagation()}>
+          <Button
+            onClick={handleUndo}
+            disabled={listDots.length === 0}
+          >
+            Desfazer
+          </Button>
 
-      <button
-        onClick={handleRedo}
-        disabled={listDotsUndo.length === 0}
-      >
-        Refazer
-      </button>
+          <Button
+            onClick={handleRedo}
+            disabled={listDotsUndo.length === 0}
+          >
+            Refazer
+          </Button>
+        </div>
+      </div>
       
       {listDots.map((item, index) => (
         <span
@@ -137,7 +146,14 @@ function App() {
             left: item.x,
             top: item.y,
           }}
-          className="dot"
+          className={`
+            w-[5px] h-[5px]
+            absolute
+            bg-cyan-400
+            rounded-full
+            transform -translate-x-1/2 -translate-y-1/2
+            hover:cursor-pointer
+            hover:opacity-80`}
           title={item.count > 1 ? `Cliques: ${item.count}` : ''}
         ></span>
       ))}  
