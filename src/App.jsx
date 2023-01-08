@@ -126,8 +126,54 @@ function App() {
         </div>
       </div>
 
+      {listDots?.length === 0 && (
+        <div className="flex justify-center">
+          <div className="flex flex-col justify-center text-center cursor-default">
+            <h3 className="text-gray-600 text-4xl font-bold tracking-wide uppercase mb-2">Clique em qualquer lugar da tela</h3>
+            <h4 className="text-gray-600 text-2xl font-semibold">e começe a brincar</h4>
+          </div>
+        </div>
+      )}
+
+      {listDots?.map((item, index) => {
+        let bgColorDot = "bg-cyan-700";
+
+        if(item.count > 1){
+          bgColorDot = "bg-cyan-500";
+        }
+        if(item.count > 5){
+          bgColorDot = "bg-cyan-400";
+        }
+        if(item.count > 10){
+          bgColorDot = "bg-cyan-200";
+        }
+        
+
+        return(
+          
+          <span
+            key={index}
+            style={{
+              left: item.x,
+              top: item.y,
+              width: sizeDot,
+              height: sizeDot,
+            }}
+            className={`
+              absolute
+              ${bgColorDot}
+              rounded-full
+              transform -translate-x-1/2 -translate-y-1/2
+              hover:cursor-pointer
+              hover:opacity-80`}
+            title={item.count > 1 ? `Cliques: ${item.count}` : ''}
+          ></span>
+        )}
+      )}
+
       <div className="flex justify-center">
-        <div className="w-auto flex gap-3 py-2 px-3" onClick={(e) => e.stopPropagation()}>
+        <div></div>
+        <div className="w-auto inline-flex gap-3 py-2 px-3" onClick={(e) => e.stopPropagation()}>
           <Button
             onClick={handleUndo}
             disabled={listDots.length === 0}
@@ -142,27 +188,7 @@ function App() {
             Refazer
           </Button>
         </div>
-      </div>
-      
-      {listDots.map((item, index) => (
-        <span
-          key={index}
-          style={{
-            left: item.x,
-            top: item.y,
-            width: sizeDot,
-            height: sizeDot,
-          }}
-          className={`
-            absolute
-            bg-cyan-400
-            rounded-full
-            transform -translate-x-1/2 -translate-y-1/2
-            hover:cursor-pointer
-            hover:opacity-80`}
-          title={item.count > 1 ? `Cliques: ${item.count}` : ''}
-        ></span>
-      ))}  
+      </div>  
 
     </div>
   )
